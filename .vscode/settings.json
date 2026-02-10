@@ -1,0 +1,8 @@
+{
+  "java.project.sourcePaths": [
+    "patient-service/src/main/java",
+    "patient-service/src/test/java"
+  ],
+  "java.compile.nullAnalysis.mode": "automatic",
+  "java.configuration.updateBuildConfiguration": "interactive"
+}

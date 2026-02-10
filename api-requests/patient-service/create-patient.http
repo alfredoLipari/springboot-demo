@@ -1,0 +1,36 @@
+POST http://localhost:4001/patients
+Content-Type: application/json
+
+{
+    "name": "Alfredo Lipari",
+    "email": "alfri.lipari@gmail.com",
+    "address": "Via anglona 16",
+    "dateOfBirth": "15-10-2000"
+
+}
+
+###
+
+POST http://localhost:4001/patients
+Content-Type: application/json
+
+{
+    "name": "John Smith",
+    "email": "john.smith@example.com",
+    "address": "123 Main St",
+    "dateOfBirth": "10-15-200"
+}
+
+###
+
+POST http://localhost:4001/patients
+Content-Type: application/json
+
+{
+    "name": "Maria Rossi",
+    "email": "maria.rossi@example.com",
+    "address": "Via Roma 1",
+    "dateOfBirth": "2000-10-15"
+}
+
+### Ambiguous inputs like 05-06-2000 are rejected. Use ISO (yyyy-MM-dd) in that case.
