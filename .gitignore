@@ -1,0 +1,59 @@
+# Maven/Java build output
+**/target/
+**/build/
+out/
+bin/
+
+# Compiled/package artifacts
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+
+# Maven
+.mvn/timing.properties
+dependency-reduced-pom.xml
+!**/.mvn/wrapper/maven-wrapper.jar
+
+# JVM crash/log files
+*.log
+hs_err_pid*
+replay_pid*
+
+# IDE/editor metadata
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.classpath
+.project
+.settings/
+.factorypath
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Local env and secrets
+.env
+.env.*
+!.env.example
+*.local
+*.secret
+*.pem
+*.key
+*.p12
+*.jks
+
+# Temp/swap/backup files
+logs/
+tmp/
+temp/
+*.tmp
+*.swp
+*.swo
+*~
+*.orig

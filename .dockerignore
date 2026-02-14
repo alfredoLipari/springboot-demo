@@ -1,0 +1,43 @@
+# VCS and local metadata
+.git
+.gitignore
+.dockerignore
+
+# IDE/editor metadata
+.idea
+.vscode
+*.iml
+
+# Build output
+**/target
+**/build
+out
+bin
+
+# Logs and temp files
+*.log
+logs
+tmp
+temp
+*.tmp
+hs_err_pid*
+replay_pid*
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Local environment/secrets
+.env
+.env.*
+!.env.example
+*.local
+*.secret
+*.pem
+*.key
+*.p12
+*.jks
+
+# Non-runtime project assets
+api-requests
