@@ -57,3 +57,6 @@ temp/
 *.swo
 *~
 *.orig
+
+# Local Docker database files
+/.docker/postgres-data/

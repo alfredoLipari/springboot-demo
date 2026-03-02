@@ -1,0 +1,82 @@
+services:
+  patient-service-db:
+    image: postgres:17
+    container_name: patient-service-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: patientdb
+      POSTGRES_USER: patient_user
+      POSTGRES_PASSWORD: patient_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./.docker/postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U patient_user -d patientdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - internal
+
+  patient-service:
+    build:
+      context: ./patient-service
+    image: patient-service:latest
+    container_name: patient-service
+    restart: unless-stopped
+    depends_on:
+      patient-service-db:
+        condition: service_healthy
+    ports:
+      - "4000:4000"
+    environment:
+      SERVER_PORT: 4000
+      SPRING_DATASOURCE_URL: jdbc:postgresql://patient-service-db:5432/patientdb
+      SPRING_DATASOURCE_USERNAME: patient_user
+      SPRING_DATASOURCE_PASSWORD: patient_pass
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_SQL_INIT_MODE: always
+      BILLING_SERVICE_ADDRESS: billing-service
+      BILLING_SERVICE_GRPC_PORT: 9002
+    networks:
+      - internal
+
+  billing-service:
+    build:
+      context: ./billing-service
+    image: billing-service:latest
+    container_name: billing-service
+    restart: unless-stopped
+    ports:
+      - "4002:4002"
+      - "9002:9002"
+    environment:
+      SERVER_PORT: 4002
+      GRPC_SERVER_PORT: 9002
+    networks:
+      - internal
+
+  kafka:
+    image: bitnami/kafka:latest
+    container_name: kafka
+    restart: unless-stopped
+    ports:
+      - "9092:9092"
+      - "9094:9094"
+    environment:
+      KAFKA_CFG_NODE_ID: 0
+      KAFKA_CFG_PROCESS_ROLES: controller,broker
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 0@kafka:9093
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CFG_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094
+      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,EXTERNAL://localhost:9094
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
+    networks:
+      - internal
+
+networks:
+  internal: {}

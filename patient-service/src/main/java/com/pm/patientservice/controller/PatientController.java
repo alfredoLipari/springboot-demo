@@ -33,7 +33,11 @@ import jakarta.validation.groups.Default;
 @Tag(name = "Patients", description = "Patient management endpoints")
 public class PatientController {
 
-    private final PatientService patientService = new PatientService(null);
+    private final PatientService patientService;
+
+    public PatientController(PatientService patientService) {
+        this.patientService = patientService;
+    }
 
 
     @GetMapping
